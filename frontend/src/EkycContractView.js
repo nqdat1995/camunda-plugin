@@ -33,7 +33,7 @@ function EkycContractView({ camundaAPI }) {
       data[key] = val;
     });
     console.log(JSON.stringify(data));
-    fetch(`${cockpitApi}/plugin/sample-plugin/${engine}/routes/mockData`, {
+    fetch(`${cockpitApi}/plugin/cockpit-plugin/${engine}/mockData`, {
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
