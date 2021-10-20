@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<routes id="camel" xmlns="http://camel.apache.org/schema/spring">
+	<route id="mock_route">
+        <from id="mock_mockData_from3" uri="direct:mockData"/>
+        <log id="mock_mockData_log6" message="${body}"/>
+        <setBody id="mock_mockData_setBody2">
+            <simple>[{"ID":"1","CIFNo":"","CustKind":"Chưa xác định","FullName":"Lê Thị Thanh Tâm","MobileNo":"0909090909","IDNo":"123456789","CreateDate":"2021-10-20","Score":"99","FailureCount":"0","IPDuplicatedCount":"0","UserProcess":"datnq29692","UserApprove":"datnq29692","MerchantID":"TIKI","Status":"U"},{"ID":"2","CIFNo":"","CustKind":"Chưa xác định","FullName":"Nguyễn Văn Tuấn","MobileNo":"0909090909","IDNo":"123456789","CreateDate":"2021-10-20","Score":"99","FailureCount":"0","IPDuplicatedCount":"0","UserProcess":"datnq29692","UserApprove":"datnq29692","MerchantID":"TIKI","Status":"U"}]</simple>
+        </setBody>
+    </route>
+</routes>
