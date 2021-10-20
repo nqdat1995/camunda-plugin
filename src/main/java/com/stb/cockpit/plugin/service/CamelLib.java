@@ -35,8 +35,8 @@ public class CamelLib {
 				public void process(Exchange exchange) throws Exception {
 					Message in = exchange.getIn();
 					for (String header : requestHeaders.getRequestHeaders().keySet()) {
-						System.out.println("[" + header + "] --> " + Arrays.toString(requestHeaders.getRequestHeader(header).toArray()));
-						in.setHeader(header, requestHeaders.getRequestHeader(header));
+						System.out.println("[" + header + "] --> " + requestHeaders.getRequestHeaders().getFirst(header));
+						in.setHeader(header, requestHeaders.getRequestHeaders().getFirst(header));
 					}
 					in.setBody(body);
 
@@ -53,10 +53,7 @@ public class CamelLib {
 				if (StringUtils.startsWith(it.getKey(), "content-length")) {
 					continue;
 				}				
-				if (headerValueObj instanceof LinkedList) {
-					LinkedList<String> lstHeaderValue = (LinkedList<String>) it.getValue();
-					strHeaderValue = StringUtils.join(lstHeaderValue, ", ");
-				} else if (headerValueObj instanceof String) {
+				if (headerValueObj instanceof String) {
 					strHeaderValue = (String) headerValueObj;
 				}
 				System.out.println(it.getKey() + " -- " + strHeaderValue);
