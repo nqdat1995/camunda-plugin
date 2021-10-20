@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="        http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd        http://camel.apache.org/schema/spring       https://camel.apache.org/schema/spring/camel-spring-2.23.3.xsd">
+	<camelContext id="camel" xmlns="http://camel.apache.org/schema/spring">
+		<route id="_route1">
+			<from id="_from1" uri="direct:specialRoute" />
+			<convertBodyTo id="_convertBodyTo1"
+				type="java.lang.String" />
+			<log id="_log2" message="${body}" />
+			<log id="_log4" message="${headers}" />
+			<setHeader headerName="data" id="_setHeader1">
+				<jsonpath resultType="java.lang.String">$.data</jsonpath>
+			</setHeader>
+			<setProperty id="_setProperty1" propertyName="data">
+				<jsonpath resultType="java.lang.String">$.data</jsonpath>
+			</setProperty>
+			<doTry id="_doTry1">
+				<to id="_to1" uri="direct:specialRoute2" />
+				<doCatch id="_doCatch1">
+					<exception>java.lang.Exception</exception>
+					<log id="_log5" message="Error" />
+				</doCatch>
+			</doTry>
+			<log id="_log1" message="${header.data} ${headers}" />
+			<log id="_log3" message="${exchangeProperty.data}" />
+		</route>
+		<route id="_route2">
+			<from id="_from2" uri="direct:specialRoute2" />
+			<setOutHeader headerName="data" id="_setOutHeader1">
+				<simple>data-ana</simple>
+			</setOutHeader>
+			<log id="_log33" message="ZZZZZZZZZZZZZ" />
+			<setBody id="_setBody1">
+				<simple>hello1111</simple>
+			</setBody>
+		</route>
+
+
+	</camelContext>
+</beans>
