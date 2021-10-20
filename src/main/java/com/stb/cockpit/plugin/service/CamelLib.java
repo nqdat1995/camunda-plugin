@@ -1,6 +1,9 @@
 package com.stb.cockpit.plugin.service;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map.Entry;
 
 import javax.ws.rs.core.HttpHeaders;
@@ -12,6 +15,7 @@ import org.apache.camel.Exchange;
 import org.apache.camel.Message;
 import org.apache.camel.Processor;
 import org.apache.camel.ProducerTemplate;
+import org.apache.commons.lang3.StringUtils;
 import org.camunda.bpm.engine.rest.dto.ExceptionDto;
 
 public class CamelLib {
@@ -38,18 +42,30 @@ public class CamelLib {
 
 				}
 			});
-			String httpStatus = (String) exchange.getIn().getHeaders().get(Exchange.HTTP_RESPONSE_CODE);
-			int status = (httpStatus == null) ? 200 : Integer.parseInt(httpStatus);
+			Object httpStatus = exchange.getIn().getHeaders().get(Exchange.HTTP_RESPONSE_CODE);
+			int status = (httpStatus == null) ? 200 : Integer.parseInt((String) httpStatus);
 
 			ResponseBuilder builder = Response.status(status).entity(exchange.getIn().getBody());
 
 			for (Entry<String, Object> it : exchange.getIn().getHeaders().entrySet()) {
-				System.out.println(it.getKey() + " -- " + it.getValue());
-				builder = builder.header(it.getKey(), it.getValue());
+				Object headerValueObj = it.getValue();
+				String strHeaderValue = "";
+				if (StringUtils.startsWith(it.getKey(), "content-length")) {
+					continue;
+				}				
+				if (headerValueObj instanceof LinkedList) {
+					LinkedList<String> lstHeaderValue = (LinkedList<String>) it.getValue();
+					strHeaderValue = StringUtils.join(lstHeaderValue, ", ");
+				} else if (headerValueObj instanceof String) {
+					strHeaderValue = (String) headerValueObj;
+				}
+				System.out.println(it.getKey() + " -- " + strHeaderValue);
+				builder = builder.header(it.getKey(), strHeaderValue);
 			}
 
 			System.out.println("In: " + exchange.getIn().getBody());
 			System.out.println("Out: " + exchange.getOut().getBody());
+
 			return builder.build();
 		} catch (Exception e) {
 			return Response.status(500).entity(ExceptionDto.fromException(e)).build();

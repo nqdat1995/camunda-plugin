@@ -68,7 +68,7 @@
         <from id="_mockData_from3" uri="direct:mockData"/>
         <log id="_mockData_log6" message="${body}"/>
         <setBody id="_mockData_setBody2">
-            <simple>"{\"key\":\"1\"}"</simple>
+            <simple>[{"key":"1","name":"Mike","age":32,"address":"10 Downing Street"},{"key":"2","name":"John","age":42,"address":"10 Downing Street"},{"key":"3","name":"Dat","age":26,"address":"266 Nam Ky Khoi Nghia Street"}]</simple>
         </setBody>
     </route>
 </routes>

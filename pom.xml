@@ -124,6 +124,11 @@
 			<artifactId>camel-jdbc-starter</artifactId>
 			<version>2.23.2</version>
 		</dependency>
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>3.12.0</version>
+		</dependency>
 	</dependencies>
 
 	<repositories>
@@ -221,8 +226,8 @@
 								commons-io, classmate, hk2, spring-bridge, class-model, hk2-runlevel, hk2-core, hk2-locator, hk2-api, hk2-utils, aopalliance-repackaged,
 								jakarta.inject, jakarta.ws.rs-api, jakarta.validation-api, jakarta.annotation-api, javassist, java-uuid-generator, asm-util, asm-commons,
 								asm-tree, asm-analysis, asm, osgi-resource-locator, commons-fileupload, joda-time, commons-pool, commons-dbcp, tomcat-annotations-api,
-								spring-core, spring-boot-jarmode-layertools, jboss-javaee-6.0, camunda-webapp, validation-api</excludeArtifactIds>
-								<excludeGroupIds>org.jboss.spec, camunda-webapp</excludeGroupIds>
+								spring-core, spring-boot-jarmode-layertools, jboss-javaee-6.0, camunda-webapp, validation-api, commons-lang3</excludeArtifactIds>
+							<excludeGroupIds>org.jboss.spec, camunda-webapp</excludeGroupIds>
 						</configuration>
 					</execution>
 				</executions>
