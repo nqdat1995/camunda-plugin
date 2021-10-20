@@ -1,9 +1,5 @@
 package com.stb.cockpit.plugin.service;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Map.Entry;
 
 import javax.ws.rs.core.HttpHeaders;
@@ -16,9 +12,13 @@ import org.apache.camel.Message;
 import org.apache.camel.Processor;
 import org.apache.camel.ProducerTemplate;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.camunda.bpm.engine.rest.dto.ExceptionDto;
 
 public class CamelLib {
+	private static final Logger logger = LogManager.getLogger(CamelLib.class);
+
 	public CamelLib(CamelContext camelContext) {
 		super();
 		this.camelContext = camelContext;
@@ -35,36 +35,36 @@ public class CamelLib {
 				public void process(Exchange exchange) throws Exception {
 					Message in = exchange.getIn();
 					for (String header : requestHeaders.getRequestHeaders().keySet()) {
-						System.out.println("[" + header + "] --> " + requestHeaders.getRequestHeaders().getFirst(header));
+						// logger.info("[" + header + "] --> " + requestHeaders.getRequestHeaders().getFirst(header));
 						in.setHeader(header, requestHeaders.getRequestHeaders().getFirst(header));
 					}
 					in.setBody(body);
-
 				}
 			});
-			Object httpStatus = exchange.getIn().getHeaders().get(Exchange.HTTP_RESPONSE_CODE);
-			int status = (httpStatus == null) ? 200 : Integer.parseInt((String) httpStatus);
+			Object httpResponseCodeObj = exchange.getIn().getHeaders().get(Exchange.HTTP_RESPONSE_CODE);
+			int httpResponseCode = (httpResponseCodeObj == null) ? 200 : Integer.parseInt((String) httpResponseCodeObj);
 
-			ResponseBuilder builder = Response.status(status).entity(exchange.getIn().getBody());
+			logger.info("HttpResponseCode = " + httpResponseCode);
+			logger.info("In: " + exchange.getIn().getBody());
+			logger.info("Out: " + exchange.getOut().getBody());
+
+			ResponseBuilder builder = Response.status(httpResponseCode).entity(exchange.getIn().getBody());
 
 			for (Entry<String, Object> it : exchange.getIn().getHeaders().entrySet()) {
 				Object headerValueObj = it.getValue();
 				String strHeaderValue = "";
 				if (StringUtils.startsWith(it.getKey(), "content-length")) {
 					continue;
-				}				
+				}
 				if (headerValueObj instanceof String) {
 					strHeaderValue = (String) headerValueObj;
 				}
-				System.out.println(it.getKey() + " -- " + strHeaderValue);
+				// logger.info(it.getKey() + " -- " + strHeaderValue);
 				builder = builder.header(it.getKey(), strHeaderValue);
 			}
-
-			System.out.println("In: " + exchange.getIn().getBody());
-			System.out.println("Out: " + exchange.getOut().getBody());
-
 			return builder.build();
 		} catch (Exception e) {
+			logger.error("CallRoute fail", e);
 			return Response.status(500).entity(ExceptionDto.fromException(e)).build();
 		}
 	}
