@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<routes id="routes-65de9546-2e31-4ca6-b79f-480d239d1827" xmlns="http://camel.apache.org/schema/spring">
+    <route id="_route1">
+        <from id="_from1" uri="direct:FilterVariables"/>
+        <setProperty id="FilterVariables_setProperty1" propertyName="UserID">
+            <jsonpath suppressExceptions="true">$.Data.UserID</jsonpath>
+        </setProperty>
+        <setProperty id="FilterVariables_setProperty2" propertyName="BranchCode">
+            <jsonpath suppressExceptions="true">$.Data.BranchCode</jsonpath>
+        </setProperty>
+        <setProperty id="FilterVariables_setProperty3" propertyName="FromDate">
+            <jsonpath suppressExceptions="true"> $.Data.FromDate</jsonpath>
+        </setProperty>
+        <setProperty id="FilterVariables_setProperty4" propertyName="ToDate">
+            <jsonpath suppressExceptions="true">$.Data.ToDate</jsonpath>
+        </setProperty>
+        <setProperty id="FilterVariables_setProperty5" propertyName="IDNo">
+            <jsonpath suppressExceptions="true">$.Data.IDNo</jsonpath>
+        </setProperty>
+        <setProperty id="FilterVariables_setProperty6" propertyName="FullName">
+            <jsonpath suppressExceptions="true">$.Data.FullName</jsonpath>
+        </setProperty>
+        <setProperty id="FilterVariables_setProperty7" propertyName="MobileNo">
+            <jsonpath suppressExceptions="true">$.Data.MobileNo</jsonpath>
+        </setProperty>
+        <setProperty id="FilterVariables_setProperty8" propertyName="CustKind">
+            <jsonpath suppressExceptions="true">$.Data.CustKind</jsonpath>
+        </setProperty>
+        <setProperty id="FilterVariables_setProperty9" propertyName="Score">
+            <jsonpath suppressExceptions="true">$.Data.Score</jsonpath>
+        </setProperty>
+        <setProperty id="FilterVariables_setProperty10" propertyName="IP">
+            <jsonpath suppressExceptions="true">$.Data.IP</jsonpath>
+        </setProperty>
+        <setProperty id="FilterVariables_setProperty11" propertyName="RiskKind">
+            <jsonpath suppressExceptions="true">$.Data.RiskKind</jsonpath>
+        </setProperty>
+        <setProperty id="FilterVariables_setProperty12" propertyName="UserProcess">
+            <jsonpath suppressExceptions="true">$.Data.UserProcess</jsonpath>
+        </setProperty>
+        <setProperty id="FilterVariables_setProperty13" propertyName="Status">
+            <jsonpath suppressExceptions="true"> $.Data.Status</jsonpath>
+        </setProperty>
+        <setProperty id="FilterVariables_setProperty14" propertyName="MerchantID">
+            <jsonpath suppressExceptions="true">$.Data.MerchantID</jsonpath>
+        </setProperty>
+    </route>
+</routes>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<routes id="routes-65de9546-2e31-4ca6-b79f-480d239d1827" xmlns="http://camel.apache.org/schema/spring">
+    <route id="searchappliclistbyid_route1">
+        <from id="searchappliclistbyid_from1" uri="direct:searchappliclistbyid_FilterVariables"/>
+        <setProperty id="searchappliclistbyid_setProperty1" propertyName="UserID">
+            <jsonpath suppressExceptions="true">$.Data.UserID</jsonpath>
+        </setProperty>
+        <setProperty id="searchappliclistbyid_setProperty2" propertyName="CriteriaType">
+            <jsonpath suppressExceptions="true">$.Data.CriteriaType</jsonpath>
+        </setProperty>
+        <setProperty id="searchappliclistbyid_setProperty3" propertyName="CriteriaValue">
+            <jsonpath suppressExceptions="true"> $.Data.CriteriaValue</jsonpath>
+        </setProperty>
+        <setProperty id="searchappliclistbyid_setProperty4" propertyName="BranchCode">
+            <jsonpath suppressExceptions="true">$.Data.BranchCode</jsonpath>
+        </setProperty>
+        <setProperty id="searchappliclistbyid_setProperty14" propertyName="MerchantID">
+            <jsonpath suppressExceptions="true">$.Data.MerchantID</jsonpath>
+        </setProperty>
+    </route>
+</routes>

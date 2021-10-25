@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<routes id="routes-d40107f9-347e-465b-8449-d95a02e52b69" xmlns="http://camel.apache.org/schema/spring">
+    <route id="SearchApplicListByID_simple-route">
+        <from id="SearchApplicListByID_to2" uri="direct:mainsearchappliclistbyid"/>
+        <convertBodyTo id="SearchApplicListByID_convertBodyTo1" type="java.lang.String"/>
+        <to id="SearchApplicListByID_to1" uri="direct:searchappliclistbyid_FilterVariables"/>
+        <to id="SearchApplicListByID_to3" uri="direct:searchappliclistbyid_FilterEvaluation"/>
+        <log id="SearchApplicListByID_SQL" message="Select * from customers where ${exchangeProperty.SearchApplicListByID_FilterConditions}"/>
+        <setBody id="SearchApplicListByIDroute-setBody">
+            <simple>Select * from customers where ${exchangeProperty.SearchApplicListByID_FilterConditions}</simple>
+        </setBody>
+        <to id="SearchApplicListByID_to5ddd" uri="jdbc:datasource?useHeadersAsParameters=true"/>
+        <log id="SearchApplicListByIDroute-log" message=">>> ${body}"/>
+    </route>
+    <route id="SearchApplicListByID_route2">
+        <from id="SearchApplicListByID_to2sssc" uri="direct:searchappliclistbyid_FilterEvaluation"/>
+        <log id="SearchApplicListByID_log3" message="${exchangeProperty.UserID} != null"/>
+        <choice id="SearchApplicListByID_choice1">
+            <when id="SearchApplicListByID_when1">
+                <simple>${exchangeProperty.UserID} != null</simple>
+                <setProperty id="SearchApplicListByID_setProperty1" propertyName="F_UserID">
+                    <simple>AND UserID LIKE :?H_UserID</simple>
+                </setProperty>
+                <setHeader headerName="H_UserID" id="SearchApplicListByIDserachapplic_H_UserID">
+                    <simple>%${exchangeProperty.UserID}%</simple>
+                </setHeader>
+            </when>
+        </choice>
+        <choice id="SearchApplicListByID_choice2">
+            <when id="SearchApplicListByID_when2">
+                <simple>  ${exchangeProperty.BranchCode} != null</simple>
+                <setProperty id="SearchApplicListByID_setProperty2" propertyName="F_BranchCode">
+                    <simple>AND BranchCode LIKE :?H_BranchCode</simple>
+                </setProperty>
+                <setHeader headerName="H_BranchCode" id="SearchApplicListByIDserachapplic_F_BranchCode">
+                    <simple>%${exchangeProperty.BranchCode}%</simple>
+                </setHeader>
+            </when>
+        </choice>
+        <choice id="SearchApplicListByID_choice3">
+            <when id="SearchApplicListByID_when3">
+                <simple>${exchangeProperty.CriteriaType} != null</simple>
+                <setProperty id="SearchApplicListByID_setProperty3" propertyName="F_CriteriaType">
+                    <simple>AND CriteriaType LIKE :?F_CriteriaType</simple>
+                </setProperty>
+                <setHeader headerName="F_CriteriaType" id="SearchApplicListByIDserachapplic_F_CriteriaType">
+                    <simple>%${exchangeProperty.CriteriaType}%</simple>
+                </setHeader>
+            </when>
+        </choice>
+        <choice id="SearchApplicListByID_choice5">
+            <when id="SearchApplicListByID_when5">
+                <simple>${exchangeProperty.CriteriaValue} != null</simple>
+                <setProperty id="SearchApplicListByID_setProperty5" propertyName="F_CriteriaValue">
+                    <simple>AND CriteriaValue LIKE :?F_CriteriaValue</simple>
+                </setProperty>
+                <setHeader headerName="F_CriteriaValue" id="SearchApplicListByIDserachapplic_F_CriteriaValue">
+                    <simple>%${exchangeProperty.CriteriaValue}%</simple>
+                </setHeader>
+            </when>
+        </choice>
+        <choice id="SearchApplicListByID_choice14">
+            <when id="SearchApplicListByID_when14">
+                <simple>${exchangeProperty.MerchantID} != null</simple>
+                <setProperty id="SearchApplicListByID_setProperty14" propertyName="F_MerchantID">
+                    <simple>AND MerchantID LIKE '%${exchangeProperty.MerchantID}</simple>
+                </setProperty>
+                <setHeader headerName="F_MerchantID" id="SearchApplicListByIDserachapplic_F_MerchantID">
+                    <simple>5${exchangeProperty.MerchantID}%</simple>
+                </setHeader>
+            </when>
+        </choice>
+        <setProperty id="SearchApplicListByID_setProperty16" propertyName="SearchApplicListByID_FilterConditions">
+            <simple>1 = 1 ${exchangeProperty.F_UserID} ${exchangeProperty.F_BranchCode}  ${exchangeProperty.F_CriteriaValue}  ${exchangeProperty.F_CriteriaType}  ${exchangeProperty.F_MerchantID}  </simple>
+        </setProperty>
+        <log id="SearchApplicListByID_log1" message="${exchangeProperty.SearchApplicListByID_FilterConditions}"/>
+    </route>
+</routes>
