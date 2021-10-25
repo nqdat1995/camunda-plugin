@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<routes id="routes-d40107f9-347e-465b-8449-d95a02e52b69" xmlns="http://camel.apache.org/schema/spring">
+    <route id="simple-route">
+        <from id="_to2" uri="direct:mainsearchapplic"/>
+        <convertBodyTo id="_convertBodyTo1" type="java.lang.String"/>
+        <to id="_to1" uri="direct:FilterVariables"/>
+        <to id="_to3" uri="direct:FilterEvaluation"/>
+        <setBody id="route-setBody">
+            <simple>Select * from customers where ${exchangeProperty.FilterConditions}</simple>
+        </setBody>
+        <to id="_to5ddd" uri="jdbc:datasource?useHeadersAsParameters=true"/>
+        <log id="route-log" message=">>> ${body}"/>
+    </route>
+    <route id="_route2">
+        <from id="_to2sssc" uri="direct:FilterEvaluation"/>
+        <log id="_log3" message="${exchangeProperty.UserID} != null"/>
+        <choice id="_choice1">
+            <when id="_when1">
+                <simple>${exchangeProperty.UserID} != null</simple>
+                <setProperty id="_setProperty1" propertyName="F_UserID">
+                    <simple>AND UserID LIKE '%:?H_UserID%'</simple>
+                </setProperty>
+                <setHeader headerName="H_UserID" id="serachapplic_H_UserID">
+                    <simple>${exchangeProperty.UserID}</simple>
+                </setHeader>
+            </when>
+        </choice>
+        <choice id="_choice2">
+            <when id="_when2">
+                <simple>  ${exchangeProperty.BranchCode} != null</simple>
+                <setProperty id="_setProperty2" propertyName="F_BranchCode">
+                    <simple>AND BranchCode LIKE '%:?H_BranchCode%'</simple>
+                </setProperty>
+                <setHeader headerName="H_BranchCode" id="serachapplic_F_BranchCode">
+                    <simple>${exchangeProperty.BranchCode}</simple>
+                </setHeader>
+            </when>
+        </choice>
+        <choice id="_choice3">
+            <when id="_when3">
+                <simple>${exchangeProperty.FromDate} != null</simple>
+                <setProperty id="_setProperty3" propertyName="F_FromDate">
+                    <simple>AND CreateDate &gt;= :?F_FromDate</simple>
+                </setProperty>
+                <setHeader headerName="F_FromDate" id="serachapplic_F_FromDate">
+                    <simple>${exchangeProperty.FromDate}</simple>
+                </setHeader>
+            </when>
+        </choice>
+        <choice id="_choice4">
+            <when id="_when4">
+                <simple>${exchangeProperty.ToDate} != null</simple>
+                <setProperty id="_setProperty4" propertyName="F_ToDate">
+                    <simple>AND CreateDate &lt;= :?F_ToDate</simple>
+                </setProperty>
+                <setHeader headerName="F_ToDate" id="serachapplic_F_ToDate">
+                    <simple>${exchangeProperty.ToDate}</simple>
+                </setHeader>
+            </when>
+        </choice>
+        <choice id="_choice5">
+            <when id="_when5">
+                <simple>${exchangeProperty.IDNo} != null</simple>
+                <setProperty id="_setProperty5" propertyName="F_IDNo">
+                    <simple>AND IDNo LIKE '%:?F_IDNo%'</simple>
+                </setProperty>
+                <setHeader headerName="F_IDNo" id="serachapplic_F_IDNo">
+                    <simple>${exchangeProperty.IDNo}</simple>
+                </setHeader>
+            </when>
+        </choice>
+        <choice id="_choice6">
+            <when id="_when6">
+                <simple>${exchangeProperty.FullName} != null</simple>
+                <setProperty id="_setProperty6" propertyName="F_FullName">
+                    <simple>AND FullName LIKE '%:?F_FullName%'</simple>
+                </setProperty>
+                <setHeader headerName="F_FullName" id="serachapplic_F_FullName">
+                    <simple>${exchangeProperty.FullName}</simple>
+                </setHeader>
+            </when>
+        </choice>
+        <choice id="_choice7">
+            <when id="_when7">
+                <simple>${exchangeProperty.MobileNo} != null</simple>
+                <setProperty id="_setProperty7" propertyName="F_MobileNo">
+                    <simple>AND MobileNo LIKE '%:?F_MobileNo%'</simple>
+                </setProperty>
+                <setHeader headerName="F_MobileNo" id="serachapplic_F_MobileNo">
+                    <simple>${exchangeProperty.MobileNo}</simple>
+                </setHeader>
+            </when>
+        </choice>
+        <choice id="_choice8">
+            <when id="_when8">
+                <simple>${exchangeProperty.CustKind} != null</simple>
+                <setProperty id="_setProperty8" propertyName="F_CustKind">
+                    <simple>AND CustKind LIKE '%:?F_CustKind%'</simple>
+                </setProperty>
+                <setHeader headerName="F_CustKind" id="serachapplic_F_CustKind">
+                    <simple>${exchangeProperty.CustKind}</simple>
+                </setHeader>
+            </when>
+        </choice>
+        <choice id="_choice9">
+            <when id="_when9">
+                <simple>${exchangeProperty.Score} != null</simple>
+                <setProperty id="_setProperty9" propertyName="F_Score">
+                    <simple>AND Score LIKE '%:?H_Score%'</simple>
+                </setProperty>
+                <setHeader headerName="H_Score" id="serachapplic_setHeader2">
+                    <simple>${exchangeProperty.Score}</simple>
+                </setHeader>
+            </when>
+        </choice>
+        <choice id="_choice10">
+            <when id="_when10">
+                <simple>${exchangeProperty.IP} != null</simple>
+                <setProperty id="_setProperty10" propertyName="F_IP">
+                    <simple>AND IP LIKE '%:?F_IP%'</simple>
+                </setProperty>
+                <setHeader headerName="F_IP" id="serachapplic_F_IP">
+                    <simple>${exchangeProperty.IP}</simple>
+                </setHeader>
+            </when>
+        </choice>
+        <choice id="_choice11">
+            <when id="_when11">
+                <simple>${exchangeProperty.RiskKind} != null</simple>
+                <setProperty id="_setProperty11" propertyName="F_RiskKind">
+                    <simple>AND RiskKind LIKE '%:?F_RiskKind%'</simple>
+                </setProperty>
+                <setHeader headerName="F_RiskKind" id="serachapplic_F_RiskKind">
+                    <simple>${exchangeProperty.RiskKind}</simple>
+                </setHeader>
+            </when>
+        </choice>
+        <choice id="_choice12">
+            <when id="_when12">
+                <simple>${exchangeProperty.UserProcess} != null</simple>
+                <setProperty id="_setProperty12" propertyName="F_UserProcess">
+                    <simple>AND UserProcess LIKE '%:?F_UserProcess%'</simple>
+                </setProperty>
+                <setHeader headerName="F_UserProcess" id="serachapplic_F_UserProcess">
+                    <simple>${exchangeProperty.UserProcess}</simple>
+                </setHeader>
+            </when>
+        </choice>
+        <choice id="_choice13">
+            <when id="_when13">
+                <simple>${exchangeProperty.Status} != null</simple>
+                <setProperty id="_setProperty13" propertyName="F_Status">
+                    <simple>AND Status LIKE '%:?F_Status%'</simple>
+                </setProperty>
+                <setHeader headerName="F_Status" id="serachapplic_F_Status">
+                    <simple>${exchangeProperty.Status}</simple>
+                </setHeader>
+            </when>
+        </choice>
+        <choice id="_choice14">
+            <when id="_when14">
+                <simple>${exchangeProperty.MerchantID} != null</simple>
+                <setProperty id="_setProperty14" propertyName="F_MerchantID">
+                    <simple>AND MerchantID LIKE '%${exchangeProperty.MerchantID}%'</simple>
+                </setProperty>
+                <setHeader headerName="F_MerchantID" id="serachapplic_F_MerchantID">
+                    <simple>${exchangeProperty.MerchantID}</simple>
+                </setHeader>
+            </when>
+        </choice>
+        <setProperty id="_setProperty16" propertyName="FilterConditions">
+            <simple>1 = 1 ${exchangeProperty.F_UserID} ${exchangeProperty.F_BranchCode} ${exchangeProperty.F_FromDate} ${exchangeProperty.F_ToDate} ${exchangeProperty.F_IDNo} ${exchangeProperty.F_FullName} ${exchangeProperty.F_MobileNo} ${exchangeProperty.F_CustKind} ${exchangeProperty.F_Score} ${exchangeProperty.F_IP} ${exchangeProperty.F_RiskKind} ${exchangeProperty.F_UserProcess} ${exchangeProperty.F_Status} ${exchangeProperty.F_MerchantID} </simple>
+        </setProperty>
+        <log id="_log1" message="${exchangeProperty.FilterConditions}"/>
+    </route>
+</routes>
