@@ -2,16 +2,16 @@
 <routes id="routes-65de9546-2e31-4ca6-b79f-480d239d1857" xmlns="http://camel.apache.org/schema/spring">
     <route id="GetApplicDetails_route1">
         <from id="GetApplicDetails_from1" uri="direct:GetApplicDetails_FilterVariables"/>
-        <setProperty id="GetApplicDetails_setProperty1" propertyName="TraceNo">
+        <setProperty id="GetApplicDetails_validation_setProperty1" propertyName="TraceNo">
             <jsonpath suppressExceptions="true">$.Data.TraceNo</jsonpath>
         </setProperty>
-        <setProperty id="GetApplicDetails_setProperty2" propertyName="MerchantID">
+        <setProperty id="GetApplicDetails_validation_setProperty2" propertyName="MerchantID">
             <jsonpath suppressExceptions="true">$.Data.MerchantID</jsonpath>
         </setProperty>
-        <setProperty id="GetApplicDetails_setProperty3" propertyName="UserID">
+        <setProperty id="GetApplicDetails_validation_setProperty3" propertyName="UserID">
             <jsonpath suppressExceptions="true">$.Data.UserID</jsonpath>
         </setProperty>
-        <setProperty id="GetApplicDetails_setProperty4" propertyName="BranchCode">
+        <setProperty id="GetApplicDetails_validation_setProperty4" propertyName="BranchCode">
             <jsonpath suppressExceptions="true">$.Data.BranchCode</jsonpath>
         </setProperty>
     </route>
