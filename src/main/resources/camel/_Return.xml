@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<routes id="routes-65de9546-2e31-4ca6-b79f-485d239d1827" xmlns="http://camel.apache.org/schema/spring">
+    <route id="Return_route1">
+        <from id="Return_from1" uri="direct:_Return"/>
+          <marshal id="Return_marshal1">
+            <json library="Jackson"/>
+        </marshal>
+		<setBody id="Return_setBody1">
+            <simple>{"FunctionName":"${exchangeProperty.FunctionName}","RequestDateTime":"${exchangeProperty.RequestDateTime}","RequestID":"${exchangeProperty.RequestID}","Data":${body}}</simple>
+        </setBody>
+        <log id="Return-log" message=">>> ${body}"/>
+    </route>
+</routes>

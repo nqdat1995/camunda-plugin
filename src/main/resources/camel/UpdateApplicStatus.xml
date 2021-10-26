@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<routes id="routes-d40107f9-347e-465b-8449-d95a02e54b69" xmlns="http://camel.apache.org/schema/spring">
+    <route id="UpdateApplicStatus_MainRoute">
+        <from id="UpdateApplicStatus_to0" uri="direct:mainupdateapplicstatus"/>
+        <to id="UpdateApplicStatus_systemTo1" uri="direct:_SystemVariables"/>
+        <to id="UpdateApplicStatus_to111" uri="direct:UpdateApplicStatus_FilterVariables"/>
+        <to id="UpdateApplicStatus_to2" uri="direct:UpdateApplicStatus_Process"/>
+        <to id="UpdateApplicStatus_Return" uri="direct:_Return"/>
+    </route>
+    <route id="UpdateApplicStatus_Process">
+        <from id="UpdateApplicStatus_to2sssc" uri="direct:UpdateApplicStatus_Process"/>
+        <setHeader headerName="H_UserID" id="SUpdateApplicStatus_H_UserID">
+            <simple>${exchangeProperty.UserID}</simple>
+        </setHeader>
+        <setHeader headerName="H_ProcessCode" id="UpdateApplicStatus_H_ProcessCode">
+            <simple>${exchangeProperty.ProcessCode}</simple>
+        </setHeader>
+        <setProperty id="updateapplicstatus_setProperty_LoopIndex" propertyName="LoopIndex">
+            <simple>${exchangeProperty.ApplicList.size}</simple>
+        </setProperty>
+        <loop id="UpdateApplicStatus_loop1">
+            <simple> ${exchangeProperty.LoopIndex} </simple>
+            <setProperty id="updateapplicstatus_setProperty56" propertyName="LoopIndex">
+                <simple>${exchangeProperty.LoopIndex}--</simple>
+            </setProperty>
+            <log id="UpdateApplicStatus-setheader1" message="H_TraceNo ${exchangeProperty.ApplicList[${exchangeProperty.CamelLoopIndex}][TraceNo]}"/>
+            <setHeader headerName="H_TraceNo" id="UpdateApplicStatus_H_TraceNo">
+                <simple>${exchangeProperty.ApplicList[${exchangeProperty.CamelLoopIndex}][TraceNo]}</simple>
+            </setHeader>
+            <log id="UpdateApplicStatus_SQL" message="Update customers SET ProcessCode = :?H_ProcessCode where TraceNo = :?H_TraceNo"/>
+            <setBody id="UpdateApplicStatusroute-setBody">
+                <simple>Update customers SET ProcessCode = :?H_ProcessCode where TraceNo = :?H_TraceNo</simple>
+            </setBody>
+            <to id="UpdateApplicStatus_to5" uri="jdbc:datasource?useHeadersAsParameters=true"/>
+        </loop>
+    </route>
+</routes>

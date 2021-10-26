@@ -1,0 +1,58 @@
+{
+   "$schema":"http://json-schema.org/draft-04/schema#",
+   "type":"object",
+   "properties":{
+      "FunctionName":{
+         "type":"string"
+      },
+      "RequestID":{
+         "type":"string"
+      },
+      "RequestDateTime":{
+         "type":"string",
+         "format":"date-time"
+      },
+      "Data":{
+         "type":"object",
+         "properties":{
+            "UserID":{
+               "type":"string",
+               "pattern":"^[0-9]{4}$"
+            },
+            "ProcessCode":{
+               "type":"string",
+               "minLength": 3
+            },
+            "ApplicList":{
+               "type":"array",
+               "items": {
+              		"properties":{
+		            "TraceNo":{
+		               "type":"string",
+		               "pattern":"^[0-9]{5}$"
+		            	},
+		            "MerchantID":{
+		               "type":"string"
+		            	}		            
+          			},        		
+	       		"required":[
+				            "TraceNo",
+				            "MerchantID"
+				         ]},
+               	"minItems": 1          
+            }
+         },
+         "required":[
+            "UserID",
+            "ProcessCode",
+            "ApplicList"
+         ]
+      }
+   },
+   "required":[
+      "FunctionName",
+      "RequestID",
+      "RequestDateTime",
+      "Data"
+   ]
+}

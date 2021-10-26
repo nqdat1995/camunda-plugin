@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<routes id="routes-d40107f9-347e-465b-8449-d95a02e54b69" xmlns="http://camel.apache.org/schema/spring">
+    <route id="ApproveApplic_MainRoute">
+        <from id="ApproveApplic_to0" uri="direct:MainApproveApplic"/>
+        <to id="ApproveApplic_systemTo1" uri="direct:_SystemVariables"/>
+        <to id="ApproveApplic_to111" uri="direct:ApproveApplic_FilterVariables"/>
+        <to id="ApproveApplic_to2" uri="direct:ApproveApplic_Process"/>
+        <to id="ApproveApplic_Return" uri="direct:_Return"/>
+    </route>
+    <route id="ApproveApplic_Process">
+        <from id="ApproveApplic_to2sssc" uri="direct:ApproveApplic_Process"/>
+        <setHeader headerName="H_UserID" id="ApproveApplic_H_UserID">
+            <simple>${exchangeProperty.UserID}</simple>
+        </setHeader>
+        <setHeader headerName="H_TypeID" id="ApproveApplic_H_TypeID">
+            <simple>${exchangeProperty.TypeID}</simple>
+        </setHeader>
+        <setProperty id="ApproveApplic_setProperty_LoopIndex" propertyName="LoopIndex">
+            <simple>${exchangeProperty.ApplicList.size}</simple>
+        </setProperty>
+        <loop id="ApproveApplic_loop1">
+            <simple> ${exchangeProperty.LoopIndex} </simple>
+            <setProperty id="ApproveApplic_setProperty56" propertyName="LoopIndex">
+                <simple>${exchangeProperty.LoopIndex}--</simple>
+            </setProperty>
+            <log id="ApproveApplic-setheader1" message="H_TraceNo ${exchangeProperty.ApplicList[${exchangeProperty.CamelLoopIndex}][TraceNo]}"/>
+            <setHeader headerName="H_TraceNo" id="ApproveApplic_H_TraceNo">
+                <simple>${exchangeProperty.ApplicList[${exchangeProperty.CamelLoopIndex}][TraceNo]}</simple>
+            </setHeader>
+            <log id="ApproveApplic_SQL" message="Update customers SET ProcessCode = :?H_ProcessCode where TraceNo = :?H_TraceNo"/>
+            <setBody id="ApproveApplicroute-setBody">
+                <simple>Update process SET TypeID = :?H_TypeID where TraceNo = :?H_TraceNo</simple>
+            </setBody>
+            <to id="ApproveApplic_to5" uri="jdbc:datasource?useHeadersAsParameters=true"/>
+        </loop>
+    </route>
+</routes>

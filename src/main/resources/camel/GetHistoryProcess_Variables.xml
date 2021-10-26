@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<routes id="routes-65de9546-2e31-4ca6-b79f-480d239d1857" xmlns="http://camel.apache.org/schema/spring">
+    <route id="GetHistoryProcess_Variables">
+        <from id="GetHistoryProcess_from1" uri="direct:GetHistoryProcess_FilterVariables"/>
+        <setProperty id="GetHistoryProcess_setProperty1" propertyName="TraceNo">
+            <jsonpath suppressExceptions="true">$.Data.TraceNo</jsonpath>
+        </setProperty>
+        <setProperty id="GetHistoryProcess_setProperty2" propertyName="MerchantID">
+            <jsonpath suppressExceptions="true">$.Data.MerchantID</jsonpath>
+        </setProperty>
+    </route>
+    <route id="GetHistoryProcess_InputValidation" shutdownRoute="Defer">
+        <from id="GetHistoryProcess_validation_from1" uri="direct:GetHistoryProcess_Validation"/>
+        <doTry id="GetHistoryProcess_validation_doTry1">
+            <to id="GetHistoryProcess_validation_to1" uri="json-validator:validation/GetHistoryProcess_Validation.json"/>
+            <log id="GetHistoryProcess_Validation_log1" message="Checking Input Validation passed"/>
+            <doCatch id="GetHistoryProcess_doCatch1">
+                <exception>org.apache.camel.ValidationException</exception>
+                <log id="GetHistoryProcess_Validation_log2" message="${body}"/>
+                <setHeader headerName="Exchange.CONTENT_TYPE" id="GetHistoryProcess_setHeader1">
+                    <constant>text/plain</constant>
+                </setHeader>
+                <setHeader headerName="Exchange.HTTP_RESPONSE_CODE" id="GetHistoryProcess_setHeader2">
+                    <constant>400</constant>
+                </setHeader>
+                <setBody id="GetHistoryProcess_validation_setBody1">
+                    <simple>Invalid request: ${exception.stacktrace}</simple>
+                </setBody>
+                <stop id="GetHistoryProcess_validation_stop1"/>
+            </doCatch>
+            <!--
+              <doFinally>
+                  <to uri="file:test/src/data/finally"/>
+              </doFinally>
+              -->
+        </doTry>
+    </route>
+</routes>

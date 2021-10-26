@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<routes id="routes-65de9546-2e31-4ca6-b79f-480d239d1827" xmlns="http://camel.apache.org/schema/spring">
+    <route id="system_route1">
+        <from id="system_from1" uri="direct:_SystemVariables"/>
+		<convertBodyTo id="System_convertBodyTo1" type="java.lang.String"/>
+        <!-- <to id="UpdateApplicStatus_to001" uri="direct:updateapplicstatus_Validation"/>-->
+        <setProperty id="system_setProperty1" propertyName="FunctionName">
+            <jsonpath suppressExceptions="true">$.FunctionName</jsonpath>
+        </setProperty>
+        <setProperty id="system_setProperty2" propertyName="RequestDateTime">
+            <jsonpath suppressExceptions="true">$.RequestDateTime</jsonpath>
+        </setProperty>
+        <setProperty id="system_setProperty3" propertyName="RequestID">
+            <jsonpath suppressExceptions="true"> $.RequestID</jsonpath>
+        </setProperty>
+    </route>
+</routes>
