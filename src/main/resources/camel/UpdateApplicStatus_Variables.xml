@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<routes id="routes-65de9546-2e31-4ca6-b79f-480d239d1857" xmlns="http://camel.apache.org/schema/spring">
+    <route id="updateapplicstatus_Variables">
+        <from id="updateapplicstatus_from1" uri="direct:UpdateApplicStatus_FilterVariables"/>
+        <setProperty id="updateapplicstatus_setProperty1" propertyName="UserID">
+            <jsonpath suppressExceptions="true">$.Data.UserID</jsonpath>
+        </setProperty>
+        <setProperty id="updateapplicstatus_setProperty2" propertyName="ProcessCode">
+            <jsonpath suppressExceptions="true">$.Data.ProcessCode</jsonpath>
+        </setProperty>
+        <setProperty id="updateapplicstatus_setProperty3" propertyName="ApplicList">
+            <jsonpath suppressExceptions="true">$.Data.ApplicList</jsonpath>
+        </setProperty>
+    </route>
+    <route id="updateapplicstatus_InputValidation" shutdownRoute="Defer">
+        <from id="updateapplicstatus_validation_from1" uri="direct:updateapplicstatus_Validation"/>
+        <doTry id="updateapplicstatus_validation_doTry1">
+            <to id="updateapplicstatus_validation_to1" uri="json-validator:validation/UpdateApplicStatus_Validation.json"/>
+            <log id="updateapplicstatus_Validation_log1" message="Checking Input Validation passed"/>
+            <doCatch id="updateapplicstatus_doCatch1">
+                <exception>org.apache.camel.ValidationException</exception>
+                <log id="updateapplicstatus_Validation_log2" message="${body}"/>
+                <setHeader headerName="Exchange.CONTENT_TYPE" id="updateapplicstatus_setHeader1">
+                    <constant>text/plain</constant>
+                </setHeader>
+                <setHeader headerName="Exchange.HTTP_RESPONSE_CODE" id="updateapplicstatus_setHeader2">
+                    <constant>400</constant>
+                </setHeader>
+                <setBody id="updateapplicstatus_validation_setBody1">
+                    <simple>Invalid request: ${exception.stacktrace}</simple>
+                </setBody>
+                <stop id="updateapplicstatus_validation_stop1"/>
+            </doCatch>
+            <!--
+              <doFinally>
+                  <to uri="file:test/src/data/finally"/>
+              </doFinally>
+              -->
+        </doTry>
+    </route>
+</routes>

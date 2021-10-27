@@ -1,37 +1,81 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="        http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd        http://camel.apache.org/schema/spring       https://camel.apache.org/schema/spring/camel-spring-2.23.3.xsd">
-    <camelContext id="camel" xmlns="http://camel.apache.org/schema/spring">
-        <route id="_route1">
-            <from id="_from1" uri="direct:specialRoute"/>
-            <convertBodyTo id="_convertBodyTo1" type="java.lang.String"/>
-            <log id="_log2" message="${body}"/>
-            <log id="_log4" message="${headers}"/>
-            <setHeader headerName="data" id="_setHeader1">
-                <jsonpath resultType="java.lang.String">$.data</jsonpath>
-            </setHeader>
-            <setProperty id="_setProperty1" propertyName="data">
-                <jsonpath resultType="java.lang.String">$.data</jsonpath>
-            </setProperty>
-            <doTry id="_doTry1">
-                <to id="_to1" uri="direct:specialRoute2"/>
-                <doCatch id="_doCatch1">
-                    <exception>java.lang.Exception</exception>
-                    <log id="_log5" message="Error"/>
-                </doCatch>
-            </doTry>
-            <log id="_log1" message="${header.data} ${headers}"/>
-            <log id="_log3" message="${exchangeProperty.data}"/>
-        </route>
-        <route id="_route2">
-            <from id="_from2" uri="direct:specialRoute2"/>
-            <setOutHeader headerName="data" id="_setOutHeader1">
-                <simple>data-ana</simple>
-            </setOutHeader>
-            <log id="_log33" message="ZZZZZZZZZZZZZ"/>
-            <setBody id="_setBody1">
-                <simple>hello1111</simple>
-            </setBody>
-        </route>
-    </camelContext>
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="        http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd        http://camel.apache.org/schema/spring       https://camel.apache.org/schema/spring/camel-spring-2.23.3.xsd">
+	<bean
+        class="org.apache.camel.spring.spi.BridgePropertyPlaceholderConfigurer"
+        id="db" primary="true" scope="singleton">
+        <property name="location" value="classpath:db.properties"/>
+    </bean>
+    <bean class="org.apache.commons.dbcp2.BasicDataSource"
+        destroy-method="close" id="datasource" scope="singleton">
+        <property name="driverClassName" value="com.mysql.cj.jdbc.Driver"/>
+        <property name="url" value="jdbc:mysql://${DB_HOST}:${DB_PORT}/${DB_NAME}"/>
+        <property name="username" value="${DB_USER}"/>
+        <property name="password" value="${DB_PASS}"/>
+    </bean>
+	<camelContext id="camel" xmlns="http://camel.apache.org/schema/spring">
+	<restConfiguration bindingMode="off" component="restlet"
+            host="localhost" port="8082"/>
+        <rest id="rest-8f7e8e02-1cf1-4c68-935f-c7c5eb32aa6c" path="/customer">
+            <post id="45b56e80-5dd1-4b35-8bf1-ac2aed7b3daa" uri="/updateapplicstatus">
+                <to id="updateapplicstatus_to1" uri="direct:mainupdateapplicstatus"/>
+            </post>
+            <post id="45b56e80-5dd1-4b85-8bf1-ac2aed7b3daa" uri="/updateapplic">
+                <to id="updateapplic_to1" uri="direct:mainupdateapplic"/>
+            </post>
+			<post id="55b56e80-5dd1-4b85-8bf1-ac2aed7b3daa" uri="/ApproveApplic">
+                <to id="ApproveApplic_to1" uri="direct:MainApproveApplic"/>
+            </post>
+            <post id="45b56e80-7dd1-4b85-8bf1-ac2aed7b3daa" uri="/GetHistoryProcess">
+                <to id="GetHistoryProcess_to1" uri="direct:MainGetHistoryProcess"/>
+            </post>
+            <post id="45b56e80-7dd1-4b85-8bf1-ac2aed7b9daa" uri="/GetHistoryProcessDetails">
+                <to id="GetHistoryProcessDetails_to1" uri="direct:MainGetHistoryProcessDetails"/>
+            </post>
+            <post id="619474dd-33de-4327-9c4a-786513748bab" uri="/getapplicdetails">
+                <to id="getapplicdetails_to1" uri="direct:maingetapplicdetails"/>
+            </post>
+            <post id="229cfa3a-46dd-44f4-8554-954fbe7de61e" uri="/searchapplic">
+                <to id="mainsearchapplic_to1" uri="direct:mainsearchapplic"/>
+            </post>
+            <post id="229cfa3a-46dd-44f4-8554-954fbe7de62e" uri="/searchappliclistbyid">
+                <to id="mainsearchappliclistbyid_to1" uri="direct:mainsearchappliclistbyid"/>
+            </post>
+        </rest>
+		<route id="_route1">
+			<from id="_from1" uri="direct:specialRoute" />
+			<convertBodyTo id="_convertBodyTo1"
+				type="java.lang.String" />
+			<log id="_log2" message="${body}" />
+			<log id="_log4" message="${headers}" />
+			<setHeader headerName="data" id="_setHeader1">
+				<jsonpath resultType="java.lang.String">$.data</jsonpath>
+			</setHeader>
+			<setProperty id="_setProperty1" propertyName="data">
+				<jsonpath resultType="java.lang.String">$.data</jsonpath>
+			</setProperty>
+			<doTry id="_doTry1">
+				<to id="_to1" uri="direct:specialRoute2" />
+				<doCatch id="_doCatch1">
+					<exception>java.lang.Exception</exception>
+					<log id="_log5" message="Error" />
+				</doCatch>
+			</doTry>
+			<log id="_log1" message="${header.data} ${headers}" />
+			<log id="_log3" message="${exchangeProperty.data}" />
+		</route>
+		<route id="_route2">
+			<from id="_from2" uri="direct:specialRoute2" />
+			<setOutHeader headerName="data" id="_setOutHeader1">
+				<simple>data-ana</simple>
+			</setOutHeader>
+			<log id="_log33" message="ZZZZZZZZZZZZZ" />
+			<setBody id="_setBody1">
+				<simple>hello1111</simple>
+			</setBody>
+		</route>
+
+
+	</camelContext>
 </beans>

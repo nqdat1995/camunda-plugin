@@ -2,15 +2,15 @@
 <routes id="routes-d40107f9-347e-465b-8449-d95a02e52b69" xmlns="http://camel.apache.org/schema/spring">
     <route id="SearchApplicListByID_simple-route">
         <from id="SearchApplicListByID_to2" uri="direct:mainsearchappliclistbyid"/>
-        <convertBodyTo id="SearchApplicListByID_convertBodyTo1" type="java.lang.String"/>
+        <to id="SearchApplicById_systemTo1" uri="direct:_SystemVariables"/>
         <to id="SearchApplicListByID_to1" uri="direct:searchappliclistbyid_FilterVariables"/>
         <to id="SearchApplicListByID_to3" uri="direct:searchappliclistbyid_FilterEvaluation"/>
         <log id="SearchApplicListByID_SQL" message="Select * from customers where ${exchangeProperty.SearchApplicListByID_FilterConditions}"/>
         <setBody id="SearchApplicListByIDroute-setBody">
             <simple>Select * from customers where ${exchangeProperty.SearchApplicListByID_FilterConditions}</simple>
         </setBody>
-        <to id="SearchApplicListByID_to5ddd" uri="jdbc:datasource?useHeadersAsParameters=true"/>
-        <log id="SearchApplicListByIDroute-log" message=">>> ${body}"/>
+        <to id="SearchApplicListByID_to5ddd" uri="jdbc:ekycdatasource?useHeadersAsParameters=true"/>
+        <to id="SearchApplicListByID_return" uri="direct:_Return"/>
     </route>
     <route id="SearchApplicListByID_route2">
         <from id="SearchApplicListByID_to2sssc" uri="direct:searchappliclistbyid_FilterEvaluation"/>

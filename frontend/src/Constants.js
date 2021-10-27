@@ -1,8 +1,25 @@
+import React from "react";
+import { EyeOutlined } from "@ant-design/icons";
+
 export const TableColumns = [
   {
     title: "ID",
     dataIndex: "ID",
     key: "ID",
+  },
+  {
+    title: "Thao tác",
+    render: (text, row) =>
+      row["TaskID"] ? (
+        <div style={{ alignItems: "center" }}>
+          <a href={`#/contract-detail?taskid=${row["TaskID"]}`}>
+            <EyeOutlined style={{ fontSize: 20 }} />
+          </a>
+        </div>
+      ) : (
+        <div />
+      ),
+    align: "center",
   },
   {
     title: "Số CIF",

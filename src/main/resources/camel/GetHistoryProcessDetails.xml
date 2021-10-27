@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<routes id="routes-d40107f9-347e-465b-8449-d95a02e54b69" xmlns="http://camel.apache.org/schema/spring">
+    <route id="GetHistoryProcessDetails_MainRoute">
+        <from id="GetHistoryProcessDetails_to0" uri="direct:MainGetHistoryProcessDetails"/>
+        <to id="GetHistoryProcessDetails_systemTo1" uri="direct:_SystemVariables"/>
+        <to id="GetHistoryProcessDetails_to111" uri="direct:GetHistoryProcessDetails_FilterVariables"/>
+        <to id="GetHistoryProcessDetails_to2" uri="direct:GetHistoryProcessDetails_Process"/>
+        <to id="GetHistoryProcessDetails_Return" uri="direct:_Return"/>
+    </route>
+    <route id="GetHistoryProcessDetails_Process">
+        <from id="GetHistoryProcessDetails_to2sssc" uri="direct:GetHistoryProcessDetails_Process"/>
+        <setHeader headerName="H_TraceNo" id="SGetHistoryProcessDetails_H_TraceNo">
+            <simple>${exchangeProperty.TraceNo}</simple>
+        </setHeader>
+        <setHeader headerName="H_MerchantID" id="GetHistoryProcessDetails_H_MerchantID">
+            <simple>${exchangeProperty.MerchantID}</simple>
+        </setHeader>
+        <setHeader headerName="H_ProcessNo" id="GetHistoryProcessDetails_H_ProcessNo">
+            <simple>${exchangeProperty.ProcessNo}</simple>
+        </setHeader>
+        <log id="GetHistoryProcessDetails_SQL" message="SELECT * FROM process WHERE TraceNo = :?H_TraceNo AND TraceNo = :?H_MerchantID"/>
+        <setBody id="GetHistoryProcessDetailsroute-setBody">
+            <simple>SELECT * FROM process WHERE ProcessNo = :?H_ProcessNo</simple>
+        </setBody>
+        <to id="GetHistoryProcessDetails_to5" uri="jdbc:ekycdatasource?useHeadersAsParameters=true"/>
+    </route>
+</routes>

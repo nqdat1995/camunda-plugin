@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<routes id="routes-65de9546-2e31-4ca6-b79f-480d239d1857" xmlns="http://camel.apache.org/schema/spring">
+    <route id="GetHistoryProcessDetails_Variables">
+        <from id="GetHistoryProcessDetails_from1" uri="direct:GetHistoryProcessDetails_FilterVariables"/>
+        <setProperty id="GetHistoryProcessDetails_setProperty1" propertyName="TraceNo">
+            <jsonpath suppressExceptions="true">$.Data.TraceNo</jsonpath>
+        </setProperty>
+        <setProperty id="GetHistoryProcessDetails_setProperty2" propertyName="MerchantID">
+            <jsonpath suppressExceptions="true">$.Data.MerchantID</jsonpath>
+        </setProperty>
+        <setProperty id="GetHistoryProcessDetails_setProperty3" propertyName="ProcessNo">
+            <jsonpath suppressExceptions="true">$.Data.ProcessNo</jsonpath>
+        </setProperty>
+    </route>
+    <route id="GetHistoryProcessDetails_InputValidation" shutdownRoute="Defer">
+        <from id="GetHistoryProcessDetails_validation_from1" uri="direct:GetHistoryProcessDetails_Validation"/>
+        <doTry id="GetHistoryProcessDetails_validation_doTry1">
+            <to id="GetHistoryProcessDetails_validation_to1" uri="json-validator:validation/GetHistoryProcessDetails_Validation.json"/>
+            <log id="GetHistoryProcessDetails_Validation_log1" message="Checking Input Validation passed"/>
+            <doCatch id="GetHistoryProcessDetails_doCatch1">
+                <exception>org.apache.camel.ValidationException</exception>
+                <log id="GetHistoryProcessDetails_Validation_log2" message="${body}"/>
+                <setHeader headerName="Exchange.CONTENT_TYPE" id="GetHistoryProcessDetails_setHeader1">
+                    <constant>text/plain</constant>
+                </setHeader>
+                <setHeader headerName="Exchange.HTTP_RESPONSE_CODE" id="GetHistoryProcessDetails_setHeader2">
+                    <constant>400</constant>
+                </setHeader>
+                <setBody id="GetHistoryProcessDetails_validation_setBody1">
+                    <simple>Invalid request: ${exception.stacktrace}</simple>
+                </setBody>
+                <stop id="GetHistoryProcessDetails_validation_stop1"/>
+            </doCatch>
+            <!--
+              <doFinally>
+                  <to uri="file:test/src/data/finally"/>
+              </doFinally>
+              -->
+        </doTry>
+    </route>
+</routes>

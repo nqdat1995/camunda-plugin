@@ -8,7 +8,7 @@
         <setBody id="route-setBody">
             <simple>Select * from customers where ${exchangeProperty.FilterConditions}</simple>
         </setBody>
-        <to id="_to5ddd" uri="jdbc:datasource?useHeadersAsParameters=true"/>
+        <to id="_to5ddd" uri="jdbc:ekycdatasource?useHeadersAsParameters=true"/>
         <log id="route-log" message=">>> ${body}"/>
     </route>
     <route id="_route2">

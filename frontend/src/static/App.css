@@ -1,0 +1,56 @@
+.container {
+  padding: 0 100px;
+  margin-top: 30px;
+  height: calc(100vh - 75px);
+  width: 100vw;
+  overflow-y: scroll;
+}
+
+.center {
+  text-align: center;
+}
+
+.image {
+  padding: 10px;
+  vertical-align: middle;
+}
+
+.portrait-image {
+  padding: 10px;
+  vertical-align: middle;
+}
+
+.button-container {
+  text-align: center;
+}
+
+.button {
+  margin: 0 10px;
+}
+
+@media screen and (max-width: 800px) {
+  .container {
+    padding: 0 10px;
+    margin-top: 30px;
+  }
+
+  .image {
+    vertical-align: middle;
+    width: 200pt;
+  }
+
+  .portrait-image {
+    width: 150pt;
+    vertical-align: middle;
+  }
+
+  .button-container {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .button {
+    flex: 1;
+    margin: 10px 10px;
+  }
+}

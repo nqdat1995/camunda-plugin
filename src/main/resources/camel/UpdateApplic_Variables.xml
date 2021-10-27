@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<routes id="routes-65de9546-2e31-4ca6-b79f-480d239d1857" xmlns="http://camel.apache.org/schema/spring">
+    <route id="updateapplic_Variables">
+        <from id="updateapplic_from1" uri="direct:UpdateApplic_FilterVariables"/>
+        <setProperty id="UpdateAppLic_setProperty1" propertyName="UserID">
+            <jsonpath suppressExceptions="true">$.Data.UserID</jsonpath>
+        </setProperty>
+        <setProperty id="UpdateAppLic_setProperty2" propertyName="TraceNo">
+            <jsonpath suppressExceptions="true">$.Data.TraceNo</jsonpath>
+        </setProperty>
+        <setProperty id="UpdateAppLic_setProperty3" propertyName="MerchantID">
+            <jsonpath suppressExceptions="true">$.Data.MerchantID</jsonpath>
+        </setProperty>
+        <setProperty id="UpdateAppLic_setProperty4" propertyName="IssuePlace">
+            <jsonpath suppressExceptions="true">$.Data.IssuePlace</jsonpath>
+        </setProperty>
+        <setProperty id="UpdateAppLic_setProperty5" propertyName="PermanentAddress">
+            <jsonpath suppressExceptions="true">$.Data.PermanentAddress</jsonpath>
+        </setProperty>
+        <setProperty id="UpdateAppLic_setProperty6" propertyName="ApartmentNo">
+            <jsonpath suppressExceptions="true">$.Data.ApartmentNo</jsonpath>
+        </setProperty>
+        <setProperty id="UpdateAppLic_setProperty7" propertyName="City">
+            <jsonpath suppressExceptions="true">$.Data.City</jsonpath>
+        </setProperty>
+        <setProperty id="UpdateAppLic_setProperty8" propertyName="District">
+            <jsonpath suppressExceptions="true">$.Data.District</jsonpath>
+        </setProperty>
+        <setProperty id="UpdateAppLic_setProperty9" propertyName="Ward">
+            <jsonpath suppressExceptions="true">$.Data.Ward</jsonpath>
+        </setProperty>
+    </route>
+    <route id="updateapplic_InputValidation" shutdownRoute="Defer">
+        <from id="updateapplic_validation_from1" uri="direct:updateapplic_Validation"/>
+        <doTry id="updateapplic_validation_doTry1">
+            <to id="updateapplic_validation_to1" uri="json-validator:validation/UpdateApplicStatus_Validation.json"/>
+            <log id="updateapplic_Validation_log1" message="Checking Input Validation passed"/>
+            <doCatch id="updateapplic_doCatch1">
+                <exception>org.apache.camel.ValidationException</exception>
+                <log id="updateapplic_Validation_log2" message="${body}"/>
+                <setHeader headerName="Exchange.CONTENT_TYPE" id="updateapplic_setHeader1">
+                    <constant>text/plain</constant>
+                </setHeader>
+                <setHeader headerName="Exchange.HTTP_RESPONSE_CODE" id="updateapplic_setHeader2">
+                    <constant>400</constant>
+                </setHeader>
+                <setBody id="updateapplic_validation_setBody1">
+                    <simple>Invalid request: ${exception.stacktrace}</simple>
+                </setBody>
+                <stop id="updateapplic_validation_stop1"/>
+            </doCatch>
+            <!--
+              <doFinally>
+                  <to uri="file:test/src/data/finally"/>
+              </doFinally>
+              -->
+        </doTry>
+    </route>
+</routes>

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<routes id="routes-d40107f9-347e-465b-8449-d95a02e54b69" xmlns="http://camel.apache.org/schema/spring">
+    <route id="GetApplicDetails_simple-route">
+        <from id="GetApplicDetails_to2" uri="direct:maingetapplicdetails"/>
+        <to id="GetApplicDetails_systemTo1" uri="direct:_SystemVariables"/>
+        <to id="GetApplicDetails_to1" uri="direct:GetApplicDetails_FilterVariables"/>
+        <to id="GetApplicDetails_to22" uri="direct:GetApplicDetails_FilterEvaluation"/>
+        <log id="GetApplicDetails_SQL" message="Select * from customers where ${exchangeProperty.GetApplicDetails_FilterConditions}"/>
+        <setBody id="GetApplicDetailsroute-setBody">
+            <simple>Select * from customers where ${exchangeProperty.GetApplicDetails_FilterConditions}</simple>
+        </setBody>
+        <to id="GetApplicDetails_to5ddd" uri="jdbc:ekycdatasource?useHeadersAsParameters=true"/>
+        <to id="GetApplicDetails_return" uri="direct:_Return"/>
+    </route>
+    <route id="GetApplicDetails_route2">
+        <from id="GetApplicDetails_to2sssc" uri="direct:GetApplicDetails_FilterEvaluation"/>
+        <log id="GetApplicDetails_log3" message="${exchangeProperty.UserID} != null"/>
+        <choice id="GetApplicDetails_choice1">
+            <when id="GetApplicDetails_when1">
+                <simple>  ${exchangeProperty.TraceNo} != null</simple>
+                <setProperty id="GetApplicDetails_setPropertyTraceNo" propertyName="F_TraceNo">
+                    <simple>AND TraceNo LIKE :?H_TraceNo</simple>
+                </setProperty>
+                <setHeader headerName="H_TraceNo" id="GetApplicDetails_F_TraceNo">
+                    <simple>%${exchangeProperty.TraceNo}%</simple>
+                </setHeader>
+            </when>
+        </choice>
+        <choice id="GetApplicDetails_choice2">
+            <when id="GetApplicDetails_when2">
+                <simple>  ${exchangeProperty.MerchantID} != null</simple>
+                <setProperty
+                    id="GetApplicDetails_setProperty2MerchantID" propertyName="F_MerchantID">
+                    <simple>AND MerchantID LIKE :?H_MerchantID</simple>
+                </setProperty>
+                <setHeader headerName="H_MerchantID" id="GetApplicDetails_F_MerchantID">
+                    <simple>%${exchangeProperty.MerchantID}%</simple>
+                </setHeader>
+            </when>
+        </choice>
+        <choice id="GetApplicDetails_choice3">
+            <when id="GetApplicDetails_when3">
+                <simple>  ${exchangeProperty.UserID} != null</simple>
+                <setProperty id="GetApplicDetails_setProperty3" propertyName="F_UserID">
+                    <simple>AND UserID LIKE :?H_UserID</simple>
+                </setProperty>
+                <setHeader headerName="H_UserID" id="GetApplicDetails_F_UserID">
+                    <simple>%${exchangeProperty.UserID}%</simple>
+                </setHeader>
+            </when>
+        </choice>
+        <choice id="GetApplicDetails_choice4">
+            <when id="GetApplicDetails_when4">
+                <simple>  ${exchangeProperty.BranchCode} != null</simple>
+                <setProperty id="GetApplicDetails_setProperty4" propertyName="F_BranchCode">
+                    <simple>AND BranchCode LIKE :?H_BranchCode</simple>
+                </setProperty>
+                <setHeader headerName="H_BranchCode" id="GetApplicDetails_F_BranchCode">
+                    <simple>%${exchangeProperty.BranchCode}%</simple>
+                </setHeader>
+            </when>
+        </choice>
+        <setProperty id="GetApplicDetails_setProperty126SQL" propertyName="GetApplicDetails_FilterConditions">
+            <simple>1 = 1 ${exchangeProperty.F_TraceNo} ${exchangeProperty.F_MerchantID} ${exchangeProperty.F_UserID} ${exchangeProperty.F_BranchCode} </simple>
+        </setProperty>
+        <log id="GetApplicDetails_log1" message="${exchangeProperty.GetApplicDetails_FilterConditions}"/>
+    </route>
+</routes>

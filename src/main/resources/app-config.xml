@@ -18,4 +18,16 @@
 		<property name="username" value="sa" />
 		<property name="password" value="sa" />
 	</bean-->
+	<bean
+        class="org.apache.camel.spring.spi.BridgePropertyPlaceholderConfigurer"
+        id="db" primary="true" scope="singleton">
+        <property name="location" value="classpath:db.properties"/>
+    </bean>
+    <bean class="org.apache.commons.dbcp2.BasicDataSource"
+        destroy-method="close" id="datasource" scope="singleton">
+        <property name="driverClassName" value="com.mysql.cj.jdbc.Driver"/>
+        <property name="url" value="jdbc:mysql://${DB_HOST}:${DB_PORT}/${DB_NAME}"/>
+        <property name="username" value="${DB_USER}"/>
+        <property name="password" value="${DB_PASS}"/>
+    </bean>
 </beans>

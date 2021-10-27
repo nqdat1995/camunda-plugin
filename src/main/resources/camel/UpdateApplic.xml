@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<routes id="routes-d40107f9-347e-465b-8449-d95a02e54b69" xmlns="http://camel.apache.org/schema/spring">
+    <route id="UpdateApplic_MainRoute">
+        <from id="UpdateApplic_to0" uri="direct:mainupdateapplic"/>
+        <to id="UpdateApplic_systemTo1" uri="direct:_SystemVariables"/>
+        <to id="UpdateApplic_to111" uri="direct:UpdateApplic_FilterVariables"/>
+        <to id="UpdateApplic_to2" uri="direct:UpdateApplic_Process"/>
+        <to id="UpdateApplic_Return" uri="direct:_Return"/>
+    </route>
+    <route id="UpdateApplic_Process">
+        <from id="UpdateApplic_to2sssc" uri="direct:UpdateApplic_Process"/>
+        <choice id="UpdateApplic_choice1">
+            <when id="UpdateApplic_when1">
+                <simple>${exchangeProperty.UserID} != null</simple>
+                <setProperty id="UpdateApplic_setProperty1" propertyName="F_UserID">
+                    <simple>, UserID = :?H_UserID </simple>
+                </setProperty>
+                <setHeader headerName="H_UserID" id="UpdateApplic_H_UserID">
+                    <simple>${exchangeProperty.UserID}</simple>
+                </setHeader>
+            </when>
+        </choice>
+        <choice id="UpdateApplic_choice2">
+            <when id="UpdateApplic_when2">
+                <simple>${exchangeProperty.TraceNo} != null</simple>
+                <setProperty id="UpdateApplic_setProperty2" propertyName="F_TraceNo">
+                    <simple>, TraceNo = :?H_TraceNo </simple>
+                </setProperty>
+                <setHeader headerName="H_TraceNo" id="UpdateApplic_H_TraceNo">
+                    <simple>${exchangeProperty.TraceNo}</simple>
+                </setHeader>
+            </when>
+        </choice>
+        <choice id="UpdateApplic_choice3">
+            <when id="UpdateApplic_when3">
+                <simple>${exchangeProperty.MerchantID} != null</simple>
+                <setProperty id="UpdateApplic_setProperty3" propertyName="F_MerchantID">
+                    <simple>, MerchantID = :?H_MerchantID </simple>
+                </setProperty>
+                <setHeader headerName="H_MerchantID" id="UpdateApplic_H_MerchantID">
+                    <simple>${exchangeProperty.MerchantID}</simple>
+                </setHeader>
+            </when>
+        </choice>
+        <choice id="UpdateApplic_choice4">
+            <when id="UpdateApplic_when4">
+                <simple>${exchangeProperty.IssuePlace} != null</simple>
+                <setProperty id="UpdateApplic_setProperty4" propertyName="F_IssuePlace">
+                    <simple>, IssuePlace = :?H_IssuePlace </simple>
+                </setProperty>
+                <setHeader headerName="H_IssuePlace" id="UpdateApplic_H_IssuePlace">
+                    <simple>${exchangeProperty.IssuePlace}</simple>
+                </setHeader>
+            </when>
+        </choice>
+        <choice id="UpdateApplic_choice5">
+            <when id="UpdateApplic_when5">
+                <simple>${exchangeProperty.PermanentAddress} != null</simple>
+                <setProperty id="UpdateApplic_setProperty5" propertyName="F_PermanentAddress">
+                    <simple>, PermanentAddress = :?H_PermanentAddress </simple>
+                </setProperty>
+                <setHeader headerName="H_PermanentAddress" id="UpdateApplic_H_PermanentAddress">
+                    <simple>${exchangeProperty.PermanentAddress}</simple>
+                </setHeader>
+            </when>
+        </choice>
+        <choice id="UpdateApplic_choice6">
+            <when id="UpdateApplic_when6">
+                <simple>${exchangeProperty.ApartmentNo} != null</simple>
+                <setProperty id="UpdateApplic_setProperty6" propertyName="F_ApartmentNo">
+                    <simple>, ApartmentNo = :?H_ApartmentNo </simple>
+                </setProperty>
+                <setHeader headerName="H_ApartmentNo" id="UpdateApplic_H_ApartmentNo">
+                    <simple>${exchangeProperty.ApartmentNo}</simple>
+                </setHeader>
+            </when>
+        </choice>
+        <choice id="UpdateApplic_choice7">
+            <when id="UpdateApplic_when7">
+                <simple>${exchangeProperty.City} != null</simple>
+                <setProperty id="UpdateApplic_setProperty7" propertyName="F_City">
+                    <simple>, City = :?H_City </simple>
+                </setProperty>
+                <setHeader headerName="H_City" id="UpdateApplic_H_City">
+                    <simple>${exchangeProperty.City}</simple>
+                </setHeader>
+            </when>
+        </choice>
+        <choice id="UpdateApplic_choice8">
+            <when id="UpdateApplic_when8">
+                <simple>${exchangeProperty.District} != null</simple>
+                <setProperty id="UpdateApplic_setProperty8" propertyName="F_District">
+                    <simple>, District = :?H_District </simple>
+                </setProperty>
+                <setHeader headerName="H_District" id="UpdateApplic_H_District">
+                    <simple>${exchangeProperty.District}</simple>
+                </setHeader>
+            </when>
+        </choice>
+        <choice id="UpdateApplic_choice9">
+            <when id="UpdateApplic_when9">
+                <simple>${exchangeProperty.Ward} != null</simple>
+                <setProperty id="UpdateApplic_setProperty9" propertyName="F_Ward">
+                    <simple>, Ward = :?H_Ward </simple>
+                </setProperty>
+                <setHeader headerName="H_Ward" id="UpdateApplic_H_Ward">
+                    <simple>${exchangeProperty.Ward}</simple>
+                </setHeader>
+            </when>
+        </choice>
+        <setProperty id="UpdateApplic_sql" propertyName="ParamList">
+            <simple> ${exchangeProperty.F_TraceNo} ${exchangeProperty.F_MerchantID} ${exchangeProperty.F_IssuePlace} ${exchangeProperty.F_PermanentAddress} ${exchangeProperty.F_ApartmentNo} ${exchangeProperty.F_City} ${exchangeProperty.F_District} ${exchangeProperty.F_Ward}</simple>
+        </setProperty>
+        <log id="UpdateApplic_SQL" message="Update customers SET UserID = :?H_UserID ${exchangeProperty.ParamList} WHERE UserID = :?H_UserID"/>
+        <setBody id="UpdateApplicroute-setBody">
+            <simple>Update customers SET UserID = :?H_UserID ${exchangeProperty.ParamList} WHERE UserID = 456</simple>
+        </setBody>
+        <to id="UpdateApplic_to5" uri="jdbc:ekycdatasource?useHeadersAsParameters=true"/>
+    </route>
+</routes>
